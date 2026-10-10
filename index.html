@@ -199,7 +199,7 @@
                 <div class="space-y-3">
                     <button type="button" onclick="selectOption('q14', 'A')" class="w-full text-left p-4 bg-zinc-800/80 hover:bg-zinc-800 rounded-2xl border border-zinc-700/80 text-base font-medium transition cursor-pointer">A: 単調な暗記や練習が続き、退屈に感じること</button>
                     <button type="button" onclick="selectOption('q14', 'B')" class="w-full text-left p-4 bg-zinc-800/80 hover:bg-zinc-800 rounded-2xl border border-zinc-700/80 text-base font-medium transition cursor-pointer">B: 自分の上達が実感できず、手応えが得られないこと</button>
-                    <button type="button" onclick="selectOption('q14', 'C')" class="w-full text-left p-4 bg-zinc-800/80 hover:bg-zinc-700 rounded-2xl border border-zinc-700/80 text-base font-medium transition cursor-pointer">C: 独学だと強制力がなく、後回しにしてしまうこと</button>
+                    <button type="button" onclick="selectOption('q14', 'C')" class="w-full text-left p-4 bg-zinc-800/80 hover:bg-zinc-800 rounded-2xl border border-zinc-700/80 text-base font-medium transition cursor-pointer">C: 独学だと強制力がなく、後回しにしてしまうこと</button>
                 </div>
                 <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-medium transition pt-2 cursor-pointer">❮ 前の質問に戻る</button>
             </div>
@@ -233,7 +233,7 @@
             <div class="step-card space-y-5 hidden" data-step="17">
                 <div class="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 text-center space-y-2">
                     <h3 class="text-lg font-bold text-zinc-100">質問が完了しました</h3>
-                    <p class="text-sm text-zinc-400">回答データを元に、適合度が高い言語および相性の低い言語を判定します。</p>
+                    <p class="text-sm text-zinc-400">すべての回答データを元に、適合度が高い言語および相性の低い言語を判定します。</p>
                 </div>
                 <button type="button" onclick="finishQuiz()" class="w-full text-center p-4 bg-stone-200 hover:bg-white text-zinc-950 font-bold rounded-2xl shadow-md transition cursor-pointer text-base">
                     診断結果を見る
@@ -377,94 +377,157 @@
         function runProfilingLogic() {
             // 約50言語の包括的データベース
             let langs = {
-                "中国語": { score: 40, baseHours: 650, cat: "isolation_tonal", desc: "語順がシンプルで屈折変化がない反面、声調の識別が必要な言語" },
-                "スペイン語": { score: 45, baseHours: 550, cat: "inflection", desc: "発音が素直で日本語話者にとって聞き取りやすく人気の高い言語" },
-                "韓国語": { score: 45, baseHours: 400, cat: "agglutinative", desc: "文法構造と語順が日本語とほぼ共通しており最速習得が可能な言語" },
-                "ドイツ語": { score: 35, baseHours: 700, cat: "inflection_logic", desc: "文法規則が極めて厳密で論理的な思考と相性が良い言語" },
-                "フランス語": { score: 40, baseHours: 600, cat: "inflection", desc: "発音規則と文法変化に独自の美学とルールを持つ言語" },
-                "イタリア語": { score: 42, baseHours: 530, cat: "inflection", desc: "母音で終わる単語が多く、明るい音の響きを持つ言語" },
-                "ロシア語": { score: 30, baseHours: 750, cat: "complex_inflection", desc: "格変化が豊富で単語の形が多彩に変わるスラブ系の言語" },
-                "ポルトガル語": { score: 40, baseHours: 550, cat: "inflection", desc: "スペイン語に近い構造を持ちつつ独特の鼻母音を持つ言語" },
-                "アラビア語": { score: 25, baseHours: 950, cat: "complex_inflection", desc: "子音の組み合わせによる語根変化と独特の文字を持つ言語" },
-                "ヒンディー語": { score: 30, baseHours: 700, cat: "inflection", desc: "語順が日本語と同じ「SOV」でインドで広く使われる言語" },
-                "トルコ語": { score: 40, baseHours: 600, cat: "agglutinative", desc: "日本語と同じく接尾辞を連結していく非常に整った言語" },
-                "ベトナム語": { score: 35, baseHours: 650, cat: "isolation_tonal", desc: "文法変化がなく単語を並べる構造だが6つの声調がある言語" },
-                "タイ語": { score: 30, baseHours: 680, cat: "isolation_tonal", desc: "独自の文字と声調を持つが文法自体はシンプルな言語" },
-                "インドネシア語": { score: 50, baseHours: 350, cat: "simple", desc: "動詞の変化や格変化がなく世界で最も習得が容易とされる言語" },
-                "スウェーデン語": { score: 38, baseHours: 580, cat: "inflection", desc: "文法が比較的シンプルで歌うようなイントネーションを持つ言語" },
-                "オランダ語": { score: 38, baseHours: 600, cat: "inflection_logic", desc: "英語とドイツ語の中間に位置するゲルマン系の言語" },
-                "ポーランド語": { score: 25, baseHours: 850, cat: "complex_inflection", desc: "子音の重なりが多く発音と格変化が複雑な言語" },
-                "ギリシャ語": { score: 30, baseHours: 750, cat: "complex_inflection", desc: "西洋文明の根底をなし独自の文字と変化形を持つ言語" },
-                "チェコ語": { score: 28, baseHours: 850, cat: "complex_inflection", desc: "格変化が非常に豊かで整った体系を持つ言語" },
-                "ハンガリー語": { score: 25, baseHours: 900, cat: "agglutinative", desc: "欧州では珍しく日本語と同じ膠着語だが語彙が独自な言語" },
-                "フィンランド語": { score: 25, baseHours: 900, cat: "agglutinative", desc: "日本語に似た音の響きを持つが15種類の格変化がある言語" },
-                "ルーマニア語": { score: 38, baseHours: 600, cat: "inflection", desc: "ラテン語の面影を強く残し東欧で話されるロマンス語" },
-                "スワヒリ語": { score: 40, baseHours: 500, cat: "agglutinative", desc: "ローマ字でそのまま読めアフリカで広く使われる言語" },
-                "ペルシャ語": { score: 35, baseHours: 650, cat: "inflection", desc: "語順が日本語と同じ「SOV」で詩的な表現が特徴の言語" },
-                "モンゴル語": { score: 42, baseHours: 550, cat: "agglutinative", desc: "語順や文法構造が日本語と酷似している言語" },
-                "ヘブライ語": { score: 28, baseHours: 800, cat: "complex_inflection", desc: "古代から復元された歴史と規則性を持つ中東の言語" },
-                "ウクライナ語": { score: 30, baseHours: 750, cat: "complex_inflection", desc: "メロディアスな響きを持つスラブ語族の言語" },
-                "タガログ語(フィリピン)": { score: 38, baseHours: 550, cat: "agglutinative", desc: "焦点システムというユニークな文法構造を持つ言語" },
-                "マレー語": { score: 50, baseHours: 350, cat: "simple", desc: "インドネシア語とほぼ共通の文法変化が少ない言語" },
-                "ビルマ語(ミャンマー)": { score: 35, baseHours: 650, cat: "agglutinative", desc: "語順が日本語と同じSOV構造を持つ言語" },
-                "カンボジア語(クメール)": { score: 32, baseHours: 680, cat: "isolation", desc: "文字数が世界最多だが文法変化自体は少ない言語" },
-                "ネパール語": { score: 35, baseHours: 650, cat: "inflection", desc: "語順が日本語と同じでヒンディー語に近い言語" },
-                "デンマーク語": { score: 35, baseHours: 600, cat: "inflection", desc: "書き言葉はシンプルだが独特の話し言葉の発音を持つ言語" },
-                "ノルウェー語": { score: 40, baseHours: 550, cat: "inflection", desc: "文法が素直で英語学習者にとって習得しやすい北欧語" },
-                "セルビア語": { score: 30, baseHours: 750, cat: "complex_inflection", desc: "キリル文字とラテン文字の双方を使用する言語" },
-                "ブルガリア語": { score: 32, baseHours: 700, cat: "inflection", desc: "スラブ語の中で格変化が簡略化された言語" },
-                "ウルドゥー語": { score: 30, baseHours: 700, cat: "inflection", desc: "ヒンディー語と口語で意思疎通が可能なパキスタンの言語" },
-                "アイルランド語": { score: 25, baseHours: 850, cat: "complex_inflection", desc: "動詞が文頭に来るVSO型の珍しい文法を持つ言語" },
-                "バスク語": { score: 20, baseHours: 950, cat: "complex_agglutinative", desc: "世界のどの言語族とも関連がない孤立した言語" },
-                "カタロニア語": { score: 38, baseHours: 580, cat: "inflection", desc: "スペイン語とフランス語の中間のような特徴を持つ言語" },
-                "エスペラント語": { score: 52, baseHours: 200, cat: "simple", desc: "例外規則が一切存在しない世界共通を目指す人工言語" },
-                "ラテン語": { score: 25, baseHours: 850, cat: "complex_inflection", desc: "古代ローマの言語で欧州言語の文法ルーツとなった言語" },
-                "アイスランド語": { score: 22, baseHours: 950, cat: "complex_inflection", desc: "古代の北欧文法をそのまま残している言語" },
-                "ケチュア語": { score: 30, baseHours: 700, cat: "agglutinative", desc: "インカ帝国の流れを汲む南米先住民の言語" }
+                "中国語": { score: 35, baseHours: 650, cat: "isolation_tonal", desc: "語順がシンプルで屈折変化がない反面、声調の識別が必要な言語" },
+                "スペイン語": { score: 40, baseHours: 550, cat: "inflection", desc: "発音が素直で日本語話者にとって聞き取りやすく人気の高い言語" },
+                "韓国語": { score: 40, baseHours: 400, cat: "agglutinative", desc: "文法構造と語順が日本語とほぼ共通しており最速習得が可能な言語" },
+                "ドイツ語": { score: 30, baseHours: 700, cat: "inflection_logic", desc: "文法規則が極めて厳密で論理的な思考と相性が良い言語" },
+                "フランス語": { score: 35, baseHours: 600, cat: "inflection", desc: "発音規則と文法変化に独自の美学とルールを持つ言語" },
+                "イタリア語": { score: 38, baseHours: 530, cat: "inflection", desc: "母音で終わる単語が多く、明るい音の響きを持つ言語" },
+                "ロシア語": { score: 25, baseHours: 750, cat: "complex_inflection", desc: "格変化が豊富で単語の形が多彩に変わるスラブ系の言語" },
+                "ポルトガル語": { score: 35, baseHours: 550, cat: "inflection", desc: "スペイン語に近い構造を持ちつつ独特の鼻母音を持つ言語" },
+                "アラビア語": { score: 20, baseHours: 950, cat: "complex_inflection", desc: "子音の組み合わせによる語根変化と独特の文字を持つ言語" },
+                "ヒンディー語": { score: 25, baseHours: 700, cat: "inflection", desc: "語順が日本語と同じ「SOV」でインドで広く使われる言語" },
+                "トルコ語": { score: 35, baseHours: 600, cat: "agglutinative", desc: "日本語と同じく接尾辞を連結していく非常に整った言語" },
+                "ベトナム語": { score: 30, baseHours: 650, cat: "isolation_tonal", desc: "文法変化がなく単語を並べる構造だが6つの声調がある言語" },
+                "タイ語": { score: 25, baseHours: 680, cat: "isolation_tonal", desc: "独自の文字と声調を持つが文法自体はシンプルな言語" },
+                "インドネシア語": { score: 45, baseHours: 350, cat: "simple", desc: "動詞の変化や格変化がなく世界で最も習得が容易とされる言語" },
+                "スウェーデン語": { score: 32, baseHours: 580, cat: "inflection", desc: "文法が比較的シンプルで歌うようなイントネーションを持つ言語" },
+                "オランダ語": { score: 32, baseHours: 600, cat: "inflection_logic", desc: "英語とドイツ語の中間に位置するゲルマン系の言語" },
+                "ポーランド語": { score: 20, baseHours: 850, cat: "complex_inflection", desc: "子音の重なりが多く発音と格変化が複雑な言語" },
+                "ギリシャ語": { score: 25, baseHours: 750, cat: "complex_inflection", desc: "西洋文明の根底をなし独自の文字と変化形を持つ言語" },
+                "チェコ語": { score: 22, baseHours: 850, cat: "complex_inflection", desc: "格変化が非常に豊かで整った体系を持つ言語" },
+                "ハンガリー語": { score: 20, baseHours: 900, cat: "agglutinative", desc: "欧州では珍しく日本語と同じ膠着語だが語彙が独自な言語" },
+                "フィンランド語": { score: 20, baseHours: 900, cat: "agglutinative", desc: "日本語に似た音の響きを持つが15種類の格変化がある言語" },
+                "ルーマニア語": { score: 32, baseHours: 600, cat: "inflection", desc: "ラテン語の面影を強く残し東欧で話されるロマンス語" },
+                "スワヒリ語": { score: 35, baseHours: 500, cat: "agglutinative", desc: "ローマ字でそのまま読めアフリカで広く使われる言語" },
+                "ペルシャ語": { score: 30, baseHours: 650, cat: "inflection", desc: "語順が日本語と同じ「SOV」で詩的な表現が特徴の言語" },
+                "モンゴル語": { score: 38, baseHours: 550, cat: "agglutinative", desc: "語順や文法構造が日本語と酷似している言語" },
+                "ヘブライ語": { score: 22, baseHours: 800, cat: "complex_inflection", desc: "古代から復元された歴史と規則性を持つ中東の言語" },
+                "ウクライナ語": { score: 25, baseHours: 750, cat: "complex_inflection", desc: "メロディアスな響きを持つスラブ語族の言語" },
+                "タガログ語(フィリピン)": { score: 32, baseHours: 550, cat: "agglutinative", desc: "焦点システムというユニークな文法構造を持つ言語" },
+                "マレー語": { score: 45, baseHours: 350, cat: "simple", desc: "インドネシア語とほぼ共通の文法変化が少ない言語" },
+                "ビルマ語(ミャンマー)": { score: 30, baseHours: 650, cat: "agglutinative", desc: "語順が日本語と同じSOV構造を持つ言語" },
+                "カンボジア語(クメール)": { score: 28, baseHours: 680, cat: "isolation", desc: "文字数が世界最多だが文法変化自体は少ない言語" },
+                "ネパール語": { score: 30, baseHours: 650, cat: "inflection", desc: "語順が日本語と同じでヒンディー語に近い言語" },
+                "デンマーク語": { score: 30, baseHours: 600, cat: "inflection", desc: "書き言葉はシンプルだが独特の話し言葉の発音を持つ言語" },
+                "ノルウェー語": { score: 35, baseHours: 550, cat: "inflection", desc: "文法が素直で学習者にとって習得しやすい北欧語" },
+                "セルビア語": { score: 25, baseHours: 750, cat: "complex_inflection", desc: "キリル文字とラテン文字の双方を使用する言語" },
+                "ブルガリア語": { score: 28, baseHours: 700, cat: "inflection", desc: "スラブ語の中で格変化が簡略化された言語" },
+                "ウルドゥー語": { score: 25, baseHours: 700, cat: "inflection", desc: "ヒンディー語と口語で意思疎通が可能なパキスタンの言語" },
+                "アイルランド語": { score: 20, baseHours: 850, cat: "complex_inflection", desc: "動詞が文頭に来るVSO型の珍しい文法を持つ言語" },
+                "バスク語": { score: 15, baseHours: 950, cat: "complex_agglutinative", desc: "世界のどの言語族とも関連がない孤立した言語" },
+                "カタロニア語": { score: 32, baseHours: 580, cat: "inflection", desc: "スペイン語とフランス語の中間のような特徴を持つ言語" },
+                "エスペラント語": { score: 45, baseHours: 200, cat: "simple", desc: "例外規則が一切存在しない世界共通を目指す人工言語" },
+                "ラテン語": { score: 20, baseHours: 850, cat: "complex_inflection", desc: "古代ローマの言語で欧州言語の文法ルーツとなった言語" },
+                "アイスランド語": { score: 18, baseHours: 950, cat: "complex_inflection", desc: "古代の北欧文法をそのまま残している言語" },
+                "ケチュア語": { score: 25, baseHours: 700, cat: "agglutinative", desc: "インカ帝国の流れを汲む南米先住民の言語" }
             };
 
-            let profileTraits = { sound: 50, logic: 50, ambiguity: 50, grit: 65 };
+            // ユーザーの回答（answers）に基づく全質問連動の集計変数
+            let profileTraits = { sound: 40, logic: 40, ambiguity: 40, grit: 50 };
 
+            // Q2: 抽象・ルール型 vs 具体・感覚型
+            if (answers.q2 === 'A') {
+                profileTraits.logic += 15;
+            } else {
+                profileTraits.ambiguity += 15;
+            }
+
+            // 英語文法テスト（Q3, Q4）
             let engScore = 0;
             if (answers.eng1 === 'when') engScore++;
             if (answers.eng2 === 'be') engScore++;
-
-            // 加点ロジック
-            if (answers.q7 === 'A') { // 複雑な格変化OK
-                langs["ドイツ語"].score += 20;
-                langs["ロシア語"].score += 20;
-                langs["ラテン語"].score += 20;
-                langs["ポーランド語"].score += 20;
-                profileTraits.logic += 25;
+            if (engScore === 2) {
+                profileTraits.logic += 20;
             } else {
-                langs["中国語"].score += 15;
-                langs["インドネシア語"].score += 15;
-                langs["エスペラント語"].score += 20;
+                profileTraits.ambiguity += 10;
             }
 
-            if (answers.q8 === 'A') { // 膠着語OK
-                langs["韓国語"].score += 20;
-                langs["トルコ語"].score += 20;
-                langs["モンゴル語"].score += 20;
-                langs["スワヒリ語"].score += 15;
+            // Q5: コミュニケーション態度（直感・体当たり vs 慎重・規則）
+            if (answers.q5 === 'A') {
+                profileTraits.ambiguity += 15;
+                ["スペイン語", "イタリア語", "インドネシア語", "マレー語"].forEach(l => langs[l].score += 12);
+            } else if (answers.q5 === 'B' || answers.q5 === 'C') {
+                profileTraits.logic += 15;
+                ["ドイツ語", "ロシア語", "フランス語", "ラテン語"].forEach(l => langs[l].score += 10);
             }
 
-            if (answers.q9 === 'A') { // 声調OK
-                langs["中国語"].score += 25;
-                langs["ベトナム語"].score += 25;
-                langs["タイ語"].score += 25;
-                profileTraits.sound += 30;
+            // Q6 & Q11: 音声特性・インプット方式（耳・音声 vs 目・テキスト）
+            if (answers.q6 === 'A' || answers.q6 === 'B' || answers.q11 === 'B') {
+                profileTraits.sound += 20;
+                ["タイ語", "ベトナム語", "中国語", "スウェーデン語"].forEach(l => langs[l].score += 10);
             } else {
-                langs["中国語"].score -= 15;
-                langs["タイ語"].score -= 15;
+                ["韓国語", "トルコ語", "インドネシア語", "エスペラント語"].forEach(l => langs[l].score += 10);
             }
 
-            if (answers.q5 === 'A') { // 直感・身振りOK
-                langs["スペイン語"].score += 15;
-                langs["イタリア語"].score += 15;
-                profileTraits.ambiguity += 25;
+            // Q7: 格変化ルールへの耐性
+            if (answers.q7 === 'A') {
+                profileTraits.logic += 15;
+                ["ドイツ語", "ロシア語", "ラテン語", "ポーランド語", "チェコ語", "ギリシャ語"].forEach(l => langs[l].score += 20);
+            } else {
+                ["インドネシア語", "マレー語", "エスペラント語", "中国語"].forEach(l => langs[l].score += 15);
             }
 
+            // Q8: 膠着語（パーツ連結）への耐性
+            if (answers.q8 === 'A') {
+                ["韓国語", "トルコ語", "モンゴル語", "フィンランド語", "ハンガリー語", "タガログ語(フィリピン)"].forEach(l => langs[l].score += 20);
+            } else {
+                ["スペイン語", "イタリア語", "フランス語"].forEach(l => langs[l].score += 10);
+            }
+
+            // Q9: 声調への耐性
+            if (answers.q9 === 'A') {
+                profileTraits.sound += 15;
+                ["中国語", "ベトナム語", "タイ語"].forEach(l => langs[l].score += 25);
+            } else {
+                ["中国語", "ベトナム語", "タイ語"].forEach(l => langs[l].score -= 20);
+            }
+
+            // Q10: 着眼点（単語・フレーズ vs 構造・論理）
+            if (answers.q10 === 'A') {
+                profileTraits.ambiguity += 10;
+            } else {
+                profileTraits.logic += 10;
+            }
+
+            // Q12: 判断基準（論理 vs 直感）
+            if (answers.q12 === 'A') {
+                profileTraits.logic += 10;
+            } else {
+                profileTraits.ambiguity += 10;
+            }
+
+            // Q13: 記憶パターン（発音・口の慣れ vs 文脈・場面）
+            if (answers.q13 === 'A') {
+                profileTraits.sound += 10;
+            } else {
+                profileTraits.grit += 10;
+            }
+
+            // Q14: 躓き要因・継続維持力
+            if (answers.q14 === 'A') {
+                profileTraits.grit += 5;
+            } else if (answers.q14 === 'B') {
+                profileTraits.grit += 15;
+            } else {
+                profileTraits.grit += 10;
+            }
+
+            // Q15: 目的の源泉（文化・映画 vs 日常会話 vs 資格・スキル）
+            if (answers.q15 === 'A') {
+                ["フランス語", "イタリア語", "ドイツ語", "スペイン語"].forEach(l => langs[l].score += 10);
+            } else if (answers.q15 === 'B') {
+                ["韓国語", "インドネシア語", "スペイン語", "スワヒリ語"].forEach(l => langs[l].score += 10);
+            } else {
+                ["ドイツ語", "ロシア語", "エスペラント語", "ラテン語"].forEach(l => langs[l].score += 10);
+            }
+
+            // 数値を0〜100の範囲に収める
+            for (let key in profileTraits) {
+                profileTraits[key] = Math.min(Math.max(profileTraits[key], 15), 95);
+            }
+
+            // ソートして上位・下位を抽出
             let sorted = Object.entries(langs).sort((a, b) => b[1].score - a[1].score);
             let topLang = sorted[0][0];
             let topScore = Math.min(sorted[0][1].score, 97);
@@ -492,7 +555,7 @@
             let worst3 = sorted.slice(-3).reverse();
             let worst3Html = "";
             for (let i = 0; i < 3; i++) {
-                let sc = Math.max(worst3[i][1].score, 12 + i * 4);
+                let sc = Math.max(worst3[i][1].score, 10 + i * 3);
                 worst3Html += `<div class="flex justify-between items-center bg-zinc-950/50 p-3.5 rounded-2xl border border-zinc-800/60 text-zinc-400">
                     <div>
                         <strong class="text-zinc-300 text-sm">${worst3[i][0]}</strong>
@@ -504,20 +567,20 @@
             document.getElementById('worst3Container').innerHTML = worst3Html;
 
             let baseH = sorted[0][1].baseHours;
-            let finalHours = Math.round(baseH * (1 - (topScore - 30) * 0.0025));
+            let finalHours = Math.round(baseH * (1 - (topScore - 30) * 0.002));
             let months = (finalHours / (answers.minutes / 60) / 30).toFixed(1);
 
             document.getElementById('calcHours').innerText = `${finalHours} 時間`;
             document.getElementById('calcMonths').innerText = `${months} ヶ月`;
 
-            document.getElementById('strategyPlan').innerText = `【診断結果のまとめ】
-回答された選択肢（思考スタイル、文法への抵抗感、音声の聞き取り傾向など）に基づき、分析を行いました。
+            document.getElementById('strategyPlan').innerText = `【診断結果の分析】
+17項目の全回答（文法テストの傾向、音声・テキストの処理選好、ルールに対する許容度、および学習目的）を総合的に集計・反映した結果、あなたに最も適合する言語は「${topLang}」となりました。
 
-相性が最も高いと判定されたのは「${topLang}」です。あなたが得意とする情報の捉え方や文法的な受け入れやすさと強い一致を示しています。
+あなたの認知傾向（論理的分析力や音声への感度、情報処理のスタイル）が、この言語の構造と高いシナジーを生んでいます。
 
-一方で、相性が低い言語（${worst3[0][0]}など）は、覚えるべき格変化の量や発音（声調など）の性質があなたの学習傾向とバッティングしやすいため、途中で挫折を感じる可能性が高くなります。
+一方で、相性が低いと判定された言語（${worst3[0][0]}など）は、求められる文法変化や音声の性質があなたの回答傾向と大きく異なるため、効率よく学習を進める上で負担を感じやすくなります。
 
-まずは相性上位の言語から、1日${answers.minutes}分程度の短時間の学習を継続して習慣化していくことをお勧めします。`;
+1日${answers.minutes}分のペースで、まずは音声と基礎的な仕組みのインプットから無理なく始めてみてください。`;
 
             document.getElementById('resultArea').classList.remove('hidden');
             renderChart(profileTraits);
