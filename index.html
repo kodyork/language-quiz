@@ -3,312 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>言語学習 適性＆戦略プロファイラー</title>
+    <title>Linguistic Aptitude & Strategy Profiler</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; }
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 min-h-screen py-8 px-4 flex flex-col justify-center items-center font-sans antialiased">
+<body class="bg-[#0c0c0e] text-zinc-100 min-h-screen py-12 px-4 flex flex-col justify-center items-center antialiased">
 
     <!-- メインカード -->
-    <div class="w-full max-w-xl bg-zinc-900 rounded-3xl shadow-xl p-6 md:p-10 border border-zinc-800/80 relative overflow-hidden">
+    <div class="w-full max-w-2xl bg-[#141416] rounded-[2.5rem] shadow-2xl p-8 md:p-12 border border-zinc-800/80 relative overflow-hidden">
         
         <!-- プログレスバー -->
-        <div id="progressContainer" class="w-full bg-zinc-800 h-1.5 rounded-full mb-8 overflow-hidden">
-            <div id="progressBar" class="bg-stone-400 h-full w-[6%] transition-all duration-300"></div>
+        <div id="progressContainer" class="w-full bg-zinc-800/60 h-2 rounded-full mb-10 overflow-hidden">
+            <div id="progressBar" class="bg-gradient-to-r from-zinc-200 to-stone-400 h-full w-[5%] transition-all duration-500 rounded-full"></div>
         </div>
 
         <!-- ヘッダー -->
-        <header id="appHeader" class="text-center mb-8">
-            <span id="stepBadge" class="text-stone-400 text-xs font-medium tracking-wider uppercase bg-zinc-800 px-3 py-1 rounded-full border border-zinc-700/50">Step 1 / 16</span>
-            <h1 class="text-xl md:text-2xl font-semibold mt-3 text-zinc-100 tracking-tight">言語学習 才能＆適性診断</h1>
+        <header id="appHeader" class="text-center mb-10">
+            <span id="stepBadge" class="text-stone-400 text-xs font-semibold tracking-widest uppercase bg-zinc-800/80 px-4 py-1.5 rounded-full border border-zinc-700/50">Step 1 of 18</span>
+            <h1 class="text-2xl md:text-3xl font-bold mt-4 text-zinc-50 tracking-tight">言語適性 ＆ コグニティブ・プロファイラー</h1>
+            <p class="text-zinc-400 text-sm mt-2">あなたの潜在的な認知バイアスと脳内OSを解き明かす、詳細分析プログラム。</p>
         </header>
 
         <!-- 質問コンテナ -->
         <div id="quizContainer">
             
             <!-- STEP 1: 第一言語 -->
-            <div class="step-card space-y-5 fade-in" data-step="1">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q1. あなたの第一言語（母語）は何ですか？</h2>
-                <div class="space-y-2.5">
-                    <button type="button" onclick="selectSingle('q1', 'Japanese')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 text-sm transition cursor-pointer">日本語</button>
-                    <button type="button" onclick="selectSingle('q1', 'Other')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 text-sm transition cursor-pointer">その他</button>
+            <div class="step-card space-y-6 fade-in" data-step="1">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q1. あなたの脳内OS（思考の基盤となる第一言語）は何ですか？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectSingle('q1', 'Japanese')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer flex justify-between items-center group">
+                        <span>日本語（島国文化と高文脈表現に最適化された脳）</span>
+                        <span class="text-zinc-600 group-hover:text-zinc-300 transition">→</span>
+                    </button>
+                    <button type="button" onclick="selectSingle('q1', 'Other')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer flex justify-between items-center group">
+                        <span>その他（マルチリンガルまたは異なる基盤を持つ脳）</span>
+                        <span class="text-zinc-600 group-hover:text-zinc-300 transition">→</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- STEP 2: 英語の学習経験 -->
-            <div class="step-card space-y-5 hidden" data-step="2">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q2. これまでに英語を勉強したことがありますか？</h2>
-                <div class="space-y-2.5">
-                    <button type="button" onclick="selectSingle('hasEnglish', 'Yes')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 text-sm transition cursor-pointer">はい（学校や自習などで取り組んだことがある）</button>
-                    <button type="button" onclick="selectSingle('hasEnglish', 'No')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 text-sm transition cursor-pointer">いいえ（ほとんどやったことがない）</button>
+            <!-- STEP 2: 思考の方向性（抽象vs具象） -->
+            <div class="step-card space-y-6 hidden" data-step="2">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q2. 複雑なシステムや新しい概念を理解するとき、どちらのアプローチに惹かれますか？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q2', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: 全体像や背後にある概念・フレームワークをまず抽象的に理解したい</button>
+                    <button type="button" onclick="selectOption('q2', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: 具体的な具体例や実際のサンプルを触りながら、ボトムアップで体得したい</button>
                 </div>
-                <div class="pt-2">
-                    <button type="button" onclick="prevStep()" class="w-1/3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition cursor-pointer">❮ 戻る</button>
-                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
             </div>
 
-            <!-- STEP 3: 中国語の学習経験 -->
-            <div class="step-card space-y-5 hidden" data-step="3">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q3. これまでに中国語を勉強したことがありますか？</h2>
-                <div class="space-y-2.5">
-                    <button type="button" onclick="selectSingle('hasChinese', 'Yes')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 text-sm transition cursor-pointer">はい（学習経験または触れたことがある）</button>
-                    <button type="button" onclick="selectSingle('hasChinese', 'No')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 text-sm transition cursor-pointer">いいえ（全くない）</button>
+            <!-- STEP 3: 英語文法チェック 1 -->
+            <div class="step-card space-y-6 hidden" data-step="3">
+                <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800/80 text-xs text-zinc-400 space-y-1.5">
+                    <p class="font-semibold text-zinc-300 uppercase tracking-wider">📝 認知・文法適性テスト (1/2)</p>
+                    <p class="text-base font-medium text-zinc-100">"Hardly had I got home ______ it began to rain."</p>
                 </div>
-                <div class="pt-2">
-                    <button type="button" onclick="prevStep()" class="w-1/3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition cursor-pointer">❮ 戻る</button>
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">空欄に入る最も適切なものを直感的に選んでください。</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <button type="button" onclick="selectOption('eng1', 'than')" class="p-4 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 font-medium transition cursor-pointer text-left">A: than</button>
+                    <button type="button" onclick="selectOption('eng1', 'when')" class="p-4 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 font-medium transition cursor-pointer text-left">B: when</button>
+                    <button type="button" onclick="selectOption('eng1', 'until')" class="p-4 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 font-medium transition cursor-pointer text-left">C: until</button>
+                    <button type="button" onclick="selectOption('eng1', 'none')" class="p-4 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 font-medium transition cursor-pointer text-left">D: パス（直感わからない）</button>
                 </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
             </div>
 
-            <!-- STEP 4: MBTI -->
-            <div class="step-card space-y-5 hidden" data-step="4">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q4. あなたのMBTI（16性格診断）のタイプは？</h2>
-                <select id="mbti" class="w-full bg-zinc-950 border border-zinc-700 rounded-2xl p-4 text-zinc-100 focus:ring-1 focus:ring-stone-400 outline-none text-sm">
-                    <optgroup label="分析家 (Analysts)">
-                        <option value="INTJ">INTJ (建築家)</option>
-                        <option value="INTP">INTP (論理学者)</option>
-                        <option value="ENTJ">ENTJ (指揮官)</option>
-                        <option value="ENTP">ENTP (討論者)</option>
-                    </optgroup>
-                    <optgroup label="外交官 (Diplomats)">
-                        <option value="INFJ">INFJ (提唱者)</option>
-                        <option value="INFP">INFP (仲介者)</option>
-                        <option value="ENFJ">ENFJ (主人公)</option>
-                        <option value="ENFP">ENFP (運動家)</option>
-                    </optgroup>
-                    <optgroup label="番人 (Sentinels)">
-                        <option value="ISTJ">ISTJ (管理者)</option>
-                        <option value="ISFJ">ISFJ (擁護者)</option>
-                        <option value="ESTJ">ESTJ (幹部)</option>
-                        <option value="ESFJ">ESFJ (領事)</option>
-                    </optgroup>
-                    <optgroup label="探検家 (Explorers)">
-                        <option value="ISTP">ISTP (巨匠)</option>
-                        <option value="ISFP">ISFP (冒険家)</option>
-                        <option value="ESTP">ESTP (起業家)</option>
-                        <option value="ESFP">ESFP (エンターテイナー)</option>
-                    </optgroup>
-                    <option value="OTHER">分からない / 診断したことがない</option>
+            <!-- STEP 4: 英語文法チェック 2 -->
+            <div class="step-card space-y-6 hidden" data-step="4">
+                <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800/80 text-xs text-zinc-400 space-y-1.5">
+                    <p class="font-semibold text-zinc-300 uppercase tracking-wider">📝 認知・文法適性テスト (2/2)</p>
+                    <p class="text-base font-medium text-zinc-100">"It is essential that he ______ present at the meeting."</p>
+                </div>
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">空欄に入る最も適切なものを選んでください。</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <button type="button" onclick="selectOption('eng2', 'is')" class="p-4 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 font-medium transition cursor-pointer text-left">A: is</button>
+                    <button type="button" onclick="selectOption('eng2', 'was')" class="p-4 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 font-medium transition cursor-pointer text-left">B: was</button>
+                    <button type="button" onclick="selectOption('eng2', 'be')" class="p-4 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 font-medium transition cursor-pointer text-left">C: be</button>
+                    <button type="button" onclick="selectOption('eng2', 'none')" class="p-4 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 font-medium transition cursor-pointer text-left">D: パス（直感わからない）</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 5: サバイバル対応（曖昧さ耐性） -->
+            <div class="step-card space-y-6 hidden" data-step="5">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q5. 完全なアウェー環境で、その国の言語も知らず英語も通じないとき、助けを求めるならどうする？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q5', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: 相手の表情やトーン、ジェスチャーを総動員してその場のノリで突破する</button>
+                    <button type="button" onclick="selectOption('q5', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: デバイスや翻訳ツールを駆使し、正確な意味を確認しながら慎重に進める</button>
+                    <button type="button" onclick="selectOption('q5', 'C')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">C: 一度冷静に周囲の看板や現地の文字構造を観察し、ルールを推論する</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 6: 音声知覚特性 -->
+            <div class="step-card space-y-6 hidden" data-step="6">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q6. 知らない外国語の音楽を聴いて真似するとき、無意識にキャッチするのは？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q6', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: 歌手特有のアクセントのノリや、リズムのうねり（音素・イントネーション）</button>
+                    <button type="button" onclick="selectOption('q6', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: 曲全体の音程やメロディの高さ（音階・トーン）</button>
+                    <button type="button" onclick="selectOption('q6', 'C')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">C: 歌詞の背景にあるストーリーや感情のニュアンス</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 7: 文法実験1（格変化） -->
+            <div class="step-card space-y-6 hidden" data-step="7">
+                <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800/80 text-xs text-zinc-400 space-y-1.5">
+                    <p class="font-semibold text-zinc-300 uppercase tracking-wider">💡 認知実験 1：形態論の検証</p>
+                    <p>「ビール」という単語が、文中の役割（主語/目的語など）によって <code class="text-zinc-200 bg-zinc-900 px-2 py-0.5 rounded">Beerum</code> や <code class="text-zinc-200 bg-zinc-900 px-2 py-0.5 rounded">Beeris</code> に変化する言語ルールがあります。</p>
+                </div>
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">この構造を目の当たりにしたとき、あなたの脳は？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q7', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: パズルの法則を見つけるようで、規則性を紐解くのが快感</button>
+                    <button type="button" onclick="selectOption('q7', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: 変化形が多くて面倒……語順だけでシンプルに表してほしい</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 8: 文法実験2（パーツ連結） -->
+            <div class="step-card space-y-6 hidden" data-step="8">
+                <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800/80 text-xs text-zinc-400 space-y-1.5">
+                    <p class="font-semibold text-zinc-300 uppercase tracking-wider">💡 認知実験 2：膠着構造の検証</p>
+                    <p>「食べる」の後ろに意味パーツを結合して1語を作るルール。<br>例: <code class="text-zinc-200 bg-zinc-900 px-2 py-0.5 rounded">Tabe</code>(食べる) + <code class="text-zinc-200 bg-zinc-900 px-2 py-0.5 rounded">sase</code>(させる) + <code class="text-zinc-200 bg-zinc-900 px-2 py-0.5 rounded">rare</code>(られる) = <code class="text-zinc-200 bg-zinc-900 px-2 py-0.5 rounded">Tabesaserare</code></p>
+                </div>
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">この数珠繋ぎ式の構造に対する感触は？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q8', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: ブロックを組み立てる感覚に似ていて直感的で分かりやすい</button>
+                    <button type="button" onclick="selectOption('q8', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: 単語が長くなりすぎて視覚的に捉えづらく混乱しそう</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 9: 文法実験3（声調） -->
+            <div class="step-card space-y-6 hidden" data-step="9">
+                <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800/80 text-xs text-zinc-400 space-y-1.5">
+                    <p class="font-semibold text-zinc-300 uppercase tracking-wider">💡 認知実験 3：音調識別力の検証</p>
+                    <p>同じ「マ」という音でも、声のトーンの上げ下げ（高平調や上下調など）で「母親」か「馬」か意味が全く変わるシステム。</p>
+                </div>
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">音声の「トーンの微差」で意味を分ける仕組みにどう向き合いたい？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q9', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: 音楽のようで面白そう。自分の耳と声をチューニングしてみたい</button>
+                    <button type="button" onclick="selectOption('q9', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: わずかなズレで意味が通じなくなりそうでプレッシャーを感じる</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 10: 思考メタ認知 -->
+            <div class="step-card space-y-6 hidden" data-step="10">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q10. 他人の会話を聞いていて、無意識に耳や意識が引き寄せられるのはどちらの要素？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q10', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: 話し手が選ぶ独特な単語のチョイスや、印象的なフレーズのセンス</button>
+                    <button type="button" onclick="selectOption('q10', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: 会話全体の論理構成や、結論への筋道が綺麗に通っているかどうか</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 11: 情報処理スタイル（視覚vs聴覚） -->
+            <div class="step-card space-y-6 hidden" data-step="11">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q11. 新しい知識やストーリーをインプットするとき、より脳に定着しやすい方法は？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q11', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: 本や資料などの「文字・テキスト」を目で追いながら整理する</button>
+                    <button type="button" onclick="selectOption('q11', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: ポッドキャストや会話などの「音声・耳からの情報」として聴き取る</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 12: 意思決定のスタイル -->
+            <div class="step-card space-y-6 hidden" data-step="12">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q12. 何か大きな決断を下す際、あなたの背中を押すのはどちらの基準ですか？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q12', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: データや客観的なメリット・リスクの分析結果</button>
+                    <button type="button" onclick="selectOption('q12', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: 直感的なワクワク感や、自身の価値観との共鳴</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 13: 記憶の定着メカニズム -->
+            <div class="step-card space-y-6 hidden" data-step="13">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q13. 新しい言葉やフレーズを記憶するとき、一番効果的だと感じるアプローチは？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q13', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: 何度も口に出して発音し、筋肉の記憶として定着させる</button>
+                    <button type="button" onclick="selectOption('q13', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: 実際の文脈やエピソード、具体的な情景と結びつけて覚える</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 14: 挫折パターン分析 -->
+            <div class="step-card space-y-6 hidden" data-step="14">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q14. これまで何かを学習・継続しようとして挫折したとき、最大の要因になったのは？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q14', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: 単調な反復作業が続き、知的好奇心が満たされず飽きてしまった</button>
+                    <button type="button" onclick="selectOption('q14', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: 自分が成長している実感が目に見えず、手応えが消えた</button>
+                    <button type="button" onclick="selectOption('q14', 'C')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">C: 一人で進める孤独感に耐えられなくなり、環境の強制力が欲しくなった</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 15: 動機の源泉 -->
+            <div class="step-card space-y-6 hidden" data-step="15">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q15. もし新しい言語を自由に使いこなせるようになったら、一番テンションが上がる瞬間は？</h2>
+                <div class="space-y-3">
+                    <button type="button" onclick="selectOption('q15', 'A')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">A: 海外のディープな映画や文学、文化的なニュアンスを完全に味わうとき</button>
+                    <button type="button" onclick="selectOption('q15', 'B')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">B: 現地の人と生きた言葉でユーモアを交えながら意気投合したとき</button>
+                    <button type="button" onclick="selectOption('q15', 'C')" class="w-full text-left p-5 bg-zinc-900/80 hover:bg-zinc-800/80 rounded-2xl border border-zinc-800 text-sm md:text-base font-medium transition cursor-pointer">C: 自身のスキルレベルが明確に上がったという達成感を得られたとき</button>
+                </div>
+                <button type="button" onclick="prevStep()" class="text-zinc-400 hover:text-zinc-200 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
+            </div>
+
+            <!-- STEP 16: リソース配分 -->
+            <div class="step-card space-y-6 hidden" data-step="16">
+                <h2 class="text-lg md:text-xl font-semibold text-zinc-100 leading-snug">Q16. あなたの日常において、言語学習に割けるリアルな可処分時間はどれくらい？</h2>
+                <select id="timeOption" class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-5 text-zinc-100 focus:ring-1 focus:ring-zinc-400 outline-none text-base cursor-pointer">
+                    <option value="30">1日 15分〜30分（スキマ時間を徹底活用するペース）</option>
+                    <option value="60" selected>1日 1時間程度（毎日の習慣に組み込む標準ペース）</option>
+                    <option value="120">1日 2時間以上（短期間で一気に加速する集中ペース）</option>
                 </select>
-                <div class="flex space-x-3 pt-2">
-                    <button type="button" onclick="prevStep()" class="w-1/3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-3 rounded-xl text-sm transition cursor-pointer">❮ 戻る</button>
-                    <button type="button" onclick="nextStep()" class="w-2/3 bg-stone-300 hover:bg-stone-200 text-zinc-900 font-semibold py-3 rounded-xl text-sm transition cursor-pointer">次へ進む ➔</button>
+                <div class="flex space-x-4 pt-4">
+                    <button type="button" onclick="prevStep()" class="w-1/3 bg-zinc-800/80 hover:bg-zinc-800 text-zinc-300 font-medium py-4 rounded-2xl text-sm transition cursor-pointer">❮ 戻る</button>
+                    <button type="button" onclick="nextStep()" class="w-2/3 bg-zinc-200 hover:bg-white text-zinc-950 font-semibold py-4 rounded-2xl text-sm transition cursor-pointer">次へ進む ➔</button>
                 </div>
             </div>
 
-            <!-- STEP 5: 英語文法テスト Q1 -->
-            <div class="step-card space-y-5 hidden" data-step="5">
-                <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 text-xs text-stone-300 space-y-1">
-                    <p class="font-semibold text-stone-400 uppercase tracking-wider">📝 英語力チェック (1/2)</p>
-                    <p class="text-sm font-medium text-zinc-100">"Hardly had I got home ______ it began to rain."</p>
+            <!-- STEP 17: 完了確認 -->
+            <div class="step-card space-y-6 hidden" data-step="17">
+                <div class="bg-zinc-950 p-6 rounded-3xl border border-zinc-800/80 text-center space-y-3">
+                    <h3 class="text-xl font-bold text-zinc-100">プロファイリングの準備が整いました</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed">あなたの17項目の認知データと回答パターンから、脳内OSに最も適合する言語エコシステムを算出します。</p>
                 </div>
-                <h2 class="text-base font-medium text-stone-200">空欄に入る最も適切な単語を選んでください。</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('eng1', 'than')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: than</button>
-                    <button type="button" onclick="selectOption('eng1', 'when')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: when</button>
-                    <button type="button" onclick="selectOption('eng1', 'until')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">C: until</button>
-                    <button type="button" onclick="selectOption('eng1', 'none')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">D: わからない</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 6: 英語文法テスト Q2 -->
-            <div class="step-card space-y-5 hidden" data-step="6">
-                <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 text-xs text-stone-300 space-y-1">
-                    <p class="font-semibold text-stone-400 uppercase tracking-wider">📝 英語力チェック (2/2)</p>
-                    <p class="text-sm font-medium text-zinc-100">"It is essential that he ______ present at the meeting."</p>
-                </div>
-                <h2 class="text-base font-medium text-stone-200">空欄に入る最も適切な単語を選んでください。</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('eng2', 'is')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: is</button>
-                    <button type="button" onclick="selectOption('eng2', 'was')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: was</button>
-                    <button type="button" onclick="selectOption('eng2', 'be')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">C: be</button>
-                    <button type="button" onclick="selectOption('eng2', 'none')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">D: わからない</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 7: 認知特性Q1（サバイバル適性） -->
-            <div class="step-card space-y-5 hidden" data-step="7">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q7. その国の言葉しか通じず、英語も一切通じない土地で、あなたはその言葉を全く知りません。助けを求めたいときどうする？</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('q7', 'A')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: 相手の表情や身振り、トーンを観察し、知っている単語やジェスチャーで突撃する</button>
-                    <button type="button" onclick="selectOption('q7', 'B')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: スマホの翻訳ツールや辞書を準備し、正確な文脈を確認してから意思疎通を試みる</button>
-                    <button type="button" onclick="selectOption('q7', 'C')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">C: 落ち着ける場所を探し、まずは現地の標識や文字のパターンを観察して法則を探る</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 8: 認知特性Q2（聴覚・感覚） -->
-            <div class="step-card space-y-5 hidden" data-step="8">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q8. 初めて聴く外国語の音楽や歌を口ずさむとき、自然と意識するのは？</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('q8', 'A')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: 歌手の独特な発音のノリや、リズムのグルーヴ感をそのままコピーすること</button>
-                    <button type="button" onclick="selectOption('q8', 'B')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: メロディラインや音の高さ（音階）を正確になぞること</button>
-                    <button type="button" onclick="selectOption('q8', 'C')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">C: 歌詞の意味や全体の世界観を紐解くこと</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 9: 文法実験1（格変化） -->
-            <div class="step-card space-y-5 hidden" data-step="9">
-                <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 text-xs text-stone-300 space-y-1">
-                    <p class="font-semibold text-stone-400 uppercase tracking-wider">💡 言語ルール観察 1</p>
-                    <p>「ビール (Beer)」という単語が、文中の役割（主語/目的語/所有など）によって <code class="text-stone-200 bg-zinc-800 px-1.5 py-0.5 rounded">Beerum</code>, <code class="text-stone-200 bg-zinc-800 px-1.5 py-0.5 rounded">Beeris</code>, <code class="text-stone-200 bg-zinc-800 px-1.5 py-0.5 rounded">Beerog</code> のように形が変わるルールがあります。</p>
-                </div>
-                <h2 class="text-base font-medium text-stone-200">このルールについて、どう感じますか？</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('q9', 'A')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: 「規則性がしっかりしているなら、パズルを解くように覚えていけそう」</button>
-                    <button type="button" onclick="selectOption('q9', 'B')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: 「形が変わるのは面倒…語順だけでシンプルに表現してほしい」</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 10: 文法実験2（膠着語・パーツ連結） -->
-            <div class="step-card space-y-5 hidden" data-step="10">
-                <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 text-xs text-stone-300 space-y-1">
-                    <p class="font-semibold text-stone-400 uppercase tracking-wider">💡 言語ルール観察 2</p>
-                    <p>「食べる」という単語の後ろに、意味を表すパーツをどんどん連結して1つの長い単語を作るルールがあります。<br>
-                    例: <code class="text-stone-200 bg-zinc-800 px-1.5 py-0.5 rounded">Tabe</code> (食べる) + <code class="text-stone-200 bg-zinc-800 px-1.5 py-0.5 rounded">sase</code> (させる) + <code class="text-stone-200 bg-zinc-800 px-1.5 py-0.5 rounded">rare</code> (られる) = <code class="text-stone-200 bg-zinc-800 px-1.5 py-0.5 rounded">Tabesaserare</code></p>
-                </div>
-                <h2 class="text-base font-medium text-stone-200">このようにパーツを数珠繋ぎにする構造はどう思いますか？</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('q10', 'A')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: 「レゴブロックの組み合わせのようで、規則的で分かりやすそう」</button>
-                    <button type="button" onclick="selectOption('q10', 'B')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: 「単語が長くなりすぎて、どこで区切るのか混乱しそう」</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 11: 文法実験3（声調言語） -->
-            <div class="step-card space-y-5 hidden" data-step="11">
-                <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 text-xs text-stone-300 space-y-1">
-                    <p class="font-semibold text-stone-400 uppercase tracking-wider">💡 言語ルール観察 3</p>
-                    <p>同じ「マ (ma)」という発音でも、声のトーンの上げ下げ（高平調・上声・去声など）によって「母親」か「馬」かなど、全く違う意味になる仕組みがあります。</p>
-                </div>
-                <h2 class="text-base font-medium text-stone-200">声の高さや抑揚で意味を区別する仕組みに対する印象は？</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('q11', 'A')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: 「音楽的で表現力豊かそう。耳を鍛えてマスターしてみたい」</button>
-                    <button type="button" onclick="selectOption('q11', 'B')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: 「声の調整が難しそうで、聞き取ってもらえるか不安になりそう」</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 12: 思考メタ認知 -->
-            <div class="step-card space-y-5 hidden" data-step="12">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q12. 人の話を聞いているときに、無意識に惹かれるポイントは？</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('q12', 'A')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: 相手が使う独特な単語のチョイスや、印象的なフレーズのストック</button>
-                    <button type="button" onclick="selectOption('q12', 'B')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: 話の論理構成や筋道がスッキリ通っているかどうか</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 13: 挫折要因 -->
-            <div class="step-card space-y-5 hidden" data-step="13">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q13. これまで何かを学習・習慣化しようとしたとき、躓きやすかった要因は？</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('q13', 'A')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: 単調な丸暗記や反復作業が続き、途中で飽きてしまった</button>
-                    <button type="button" onclick="selectOption('q13', 'B')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: 目に見える進歩や成果が感じられず、モチベーションが下がった</button>
-                    <button type="button" onclick="selectOption('q13', 'C')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">C: 一人で続けるのが難しく、ペースメーカーとなる環境がなかった</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 14: 学習動機 -->
-            <div class="step-card space-y-5 hidden" data-step="14">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q14. 新しい言語が話せるようになったら、何をしているときが一番ワクワクしそう？</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="selectOption('q14', 'A')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">A: 海外の映画や音楽、小説などの文化作品を原語のまま楽しむとき</button>
-                    <button type="button" onclick="selectOption('q14', 'B')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">B: 現地の人たちとフランクに楽しく会話が盛り上がったとき</button>
-                    <button type="button" onclick="selectOption('q14', 'C')" class="w-full text-left p-4 bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl border border-zinc-700/60 transition cursor-pointer">C: 資格試験に合格したり、自分のスキルレベルが高まったと実感できたとき</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
-            </div>
-
-            <!-- STEP 15: 学習時間 -->
-            <div class="step-card space-y-5 hidden" data-step="15">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q15. 1日に確保できる現実的な学習時間はどのくらいですか？</h2>
-                <select id="timeOption" class="w-full bg-zinc-950 border border-zinc-700 rounded-2xl p-4 text-zinc-100 focus:ring-1 focus:ring-stone-400 outline-none text-sm">
-                    <option value="30">1日 15分〜30分（無理のない範囲で継続）</option>
-                    <option value="60" selected>1日 1時間程度（毎日の習慣として取り組む）</option>
-                    <option value="120">1日 2時間以上（集中して短期間で伸ばす）</option>
-                </select>
-                <div class="flex space-x-3 pt-2">
-                    <button type="button" onclick="prevStep()" class="w-1/3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-3 rounded-xl text-sm transition cursor-pointer">❮ 戻る</button>
-                    <button type="button" onclick="nextStep()" class="w-2/3 bg-stone-300 hover:bg-stone-200 text-zinc-900 font-semibold py-3 rounded-xl text-sm transition cursor-pointer">次へ進む ➔</button>
-                </div>
-            </div>
-
-            <!-- STEP 16: 完了確認 -->
-            <div class="step-card space-y-5 hidden" data-step="16">
-                <h2 class="text-base md:text-lg font-medium text-stone-200">Q16. すべての質問が完了しました。適性結果を算出しますか？</h2>
-                <div class="space-y-2.5 text-sm">
-                    <button type="button" onclick="finishQuiz()" class="w-full text-center p-4 bg-stone-200 hover:bg-white text-zinc-950 font-bold rounded-2xl shadow-md transition cursor-pointer">適性診断を実行する ✨</button>
-                </div>
-                <button type="button" onclick="prevStep()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-2.5 rounded-xl text-xs transition mt-2 cursor-pointer">❮ 前の質問に戻る</button>
+                <button type="button" onclick="finishQuiz()" class="w-full text-center p-5 bg-gradient-to-r from-zinc-200 to-stone-300 hover:from-white hover:to-stone-200 text-zinc-950 font-bold rounded-2xl shadow-xl transition cursor-pointer text-base">
+                    プロファイル結果を生成する ✨
+                </button>
+                <button type="button" onclick="prevStep()" class="w-full text-zinc-500 hover:text-zinc-300 text-xs font-semibold tracking-wider uppercase transition pt-2">❮ 前の質問に戻る</button>
             </div>
 
         </div>
 
         <!-- 結果表示エリア -->
-        <div id="resultArea" class="hidden space-y-6 fade-in">
+        <div id="resultArea" class="hidden space-y-8 fade-in">
             
-            <div class="text-center bg-zinc-950/80 p-6 md:p-8 rounded-3xl border border-zinc-800">
-                <p class="text-stone-400 text-xs font-semibold uppercase tracking-widest">Recommended Language</p>
-                <h2 id="topLangName" class="text-3xl font-bold text-zinc-100 mt-2">--</h2>
-                <div class="inline-block bg-zinc-800 text-stone-300 border border-zinc-700 font-medium px-4 py-1 rounded-full text-xs mt-3">
-                    相性適合率 <span id="topLangScore" class="text-stone-100 font-bold">--</span>%
+            <!-- 脳内タイプ称号バッジ -->
+            <div class="text-center bg-zinc-950/90 p-8 rounded-[2rem] border border-zinc-800/90 relative overflow-hidden space-y-3">
+                <span id="userPersonaTitle" class="bg-zinc-800 text-stone-300 text-xs font-semibold px-4 py-1.5 rounded-full border border-zinc-700/50 uppercase tracking-widest">--</span>
+                <h2 id="topLangName" class="text-3xl md:text-4xl font-extrabold text-zinc-50 tracking-tight mt-1">--</h2>
+                <div class="inline-flex items-center space-x-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold px-5 py-1.5 rounded-full text-sm">
+                    <span>相性シンクロ率:</span>
+                    <span id="topLangScore" class="font-bold text-base">--</span>%
+                </div>
+            </div>
+
+            <!-- ワクワクする結果カード（認知特性と才能の深掘り） -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-zinc-950/60 p-6 rounded-3xl border border-zinc-800/80 space-y-2">
+                    <h3 class="font-semibold text-stone-300 text-xs uppercase tracking-wider">⚡ あなたの最強の学習フック</h3>
+                    <p id="resultHook" class="text-zinc-300 text-sm leading-relaxed">--</p>
+                </div>
+                <div class="bg-zinc-950/60 p-6 rounded-3xl border border-zinc-800/80 space-y-2">
+                    <h3 class="font-semibold text-stone-300 text-xs uppercase tracking-wider">🎯 陥りやすい罠と対策</h3>
+                    <p id="resultTrap" class="text-zinc-300 text-sm leading-relaxed">--</p>
                 </div>
             </div>
 
             <!-- レーダーチャート -->
-            <div class="bg-zinc-950/50 p-5 rounded-2xl border border-zinc-800/80">
-                <h3 class="font-medium text-stone-300 text-xs uppercase tracking-wider mb-3">🧠 あなたの言語認知プロファイル</h3>
-                <div class="w-full h-52 flex justify-center items-center">
+            <div class="bg-zinc-950/60 p-6 rounded-3xl border border-zinc-800/80">
+                <h3 class="font-semibold text-stone-300 text-xs uppercase tracking-wider mb-4">🧠 コグニティブ・レーダープロファイル</h3>
+                <div class="w-full h-60 flex justify-center items-center">
                     <canvas id="radarChart"></canvas>
                 </div>
             </div>
 
-            <!-- TOP 5 -->
+            <!-- TOP 5 おすすめ言語 -->
             <div>
-                <h3 class="font-bold text-stone-300 text-xs uppercase tracking-wider mb-2.5">🏅 あなたに向いている言語 TOP 5</h3>
-                <div id="top5Container" class="space-y-2 text-sm"></div>
+                <h3 class="font-semibold text-stone-300 text-xs uppercase tracking-wider mb-3">🏅 脳内OSが共鳴する言語 TOP 5（英語圏・中国語圏を除く）</h3>
+                <div id="top5Container" class="space-y-2.5 text-sm"></div>
             </div>
 
             <!-- B1到達シミュレーション -->
-            <div class="bg-zinc-950/50 p-5 rounded-2xl border border-zinc-800/80 space-y-3 text-sm">
-                <h3 class="font-medium text-stone-300 text-xs uppercase tracking-wider">⏱️ CEFR B1到達（日常会話自立レベル）シミュレーション</h3>
-                <div class="grid grid-cols-2 gap-3 text-center">
-                    <div class="bg-zinc-900/80 p-3.5 rounded-xl border border-zinc-800">
+            <div class="bg-zinc-950/60 p-6 rounded-3xl border border-zinc-800/80 space-y-4">
+                <h3 class="font-semibold text-stone-300 text-xs uppercase tracking-wider">⏱️ CEFR B1到達（自立的運用レベル）ロードマップ</h3>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-zinc-900/80 p-4 rounded-2xl border border-zinc-800">
                         <p class="text-xs text-zinc-400">想定必要学習時間</p>
-                        <p id="calcHours" class="text-base font-semibold text-zinc-100 mt-1">-- 時間</p>
+                        <p id="calcHours" class="text-lg font-bold text-zinc-100 mt-1">-- 時間</p>
                     </div>
-                    <div class="bg-zinc-900/80 p-3.5 rounded-xl border border-zinc-800">
-                        <p class="text-xs text-zinc-400">目標達成までの期間</p>
-                        <p id="calcMonths" class="text-base font-semibold text-stone-300 mt-1">-- ヶ月</p>
+                    <div class="bg-zinc-900/80 p-4 rounded-2xl border border-zinc-800">
+                        <p class="text-xs text-zinc-400">目標達成までの目安期間</p>
+                        <p id="calcMonths" class="text-lg font-bold text-stone-300 mt-1">-- ヶ月</p>
                     </div>
                 </div>
-                <p class="text-xs text-zinc-400 pt-1">・概算費用目安：<span id="calcCost" class="text-zinc-200">--</span></p>
             </div>
 
-            <!-- 学習戦略 -->
-            <div class="bg-zinc-950/50 p-5 rounded-2xl border border-zinc-800/80 text-sm space-y-2">
-                <h3 class="font-medium text-stone-300 text-xs uppercase tracking-wider">💡 あなた専用の言語学的アプローチ</h3>
-                <p id="strategyPlan" class="text-zinc-300 leading-relaxed text-xs md:text-sm">--</p>
+            <!-- 詳細解説 -->
+            <div class="bg-zinc-950/60 p-6 rounded-3xl border border-zinc-800/80 text-sm space-y-3">
+                <h3 class="font-semibold text-stone-300 text-xs uppercase tracking-wider">💡 言語学的アナリストからの処方箋</h3>
+                <p id="strategyPlan" class="text-zinc-300 leading-relaxed text-sm md:text-base">--</p>
             </div>
 
-            <button onclick="restart()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium py-3 rounded-xl text-sm transition cursor-pointer">
-                もう一度診断する
+            <button onclick="restart()" class="w-full bg-zinc-800/80 hover:bg-zinc-800 text-zinc-300 font-medium py-4 rounded-2xl text-sm transition cursor-pointer">
+                診断をやり直す
             </button>
         </div>
 
@@ -318,12 +320,12 @@
         let answers = {};
         let currentStep = 1;
         let chartInstance = null;
-        const totalSteps = 16;
+        const totalSteps = 17;
 
         function updateProgress() {
             let percent = (currentStep / totalSteps) * 100;
             document.getElementById('progressBar').style.width = percent + '%';
-            document.getElementById('stepBadge').innerText = `Step ${currentStep} / ${totalSteps}`;
+            document.getElementById('stepBadge').innerText = `Step ${currentStep} of ${totalSteps}`;
         }
 
         function selectSingle(q, val) {
@@ -373,7 +375,6 @@
         }
 
         function finishQuiz() {
-            answers.mbti = document.getElementById('mbti').value;
             answers.minutes = parseInt(document.getElementById('timeOption').value);
 
             let currentCard = document.querySelector(`[data-step="${totalSteps}"]`);
@@ -386,18 +387,19 @@
         }
 
         function runProfilingLogic() {
+            // 英語・中国語を完全に除外し、魅力的なメジャー言語＋激レア言語プール
             let langs = {
-                "スペイン語": { score: 45, baseHours: 550 },
-                "韓国語": { score: 45, baseHours: 400 },
-                "ドイツ語": { score: 35, baseHours: 700 },
-                "フランス語": { score: 40, baseHours: 600 },
-                "イタリア語": { score: 42, baseHours: 530 },
-                "ロシア語": { score: 30, baseHours: 750 },
-                "ポルトガル語": { score: 40, baseHours: 550 },
-                "エスペラント語 (人工言語)": { score: 25, baseHours: 200 },
-                "フィンランド語 (ウラル語族)": { score: 20, baseHours: 900 },
-                "ラテン語 (ロマンス語の母)": { score: 20, baseHours: 850 },
-                "アイスランド語 (古代北欧語)": { score: 18, baseHours: 950 }
+                "スペイン語": { score: 45, baseHours: 550, desc: "世界中で話される熱狂とリズムの言語" },
+                "韓国語": { score: 45, baseHours: 400, desc: "日本語と構造が酷似した爆速習得枠" },
+                "ドイツ語": { score: 35, baseHours: 700, desc: "論理と精密さが支配する知性の言語" },
+                "フランス語": { score: 40, baseHours: 600, desc: "美意識とエレガンスが宿る洗練の言語" },
+                "イタリア語": { score: 42, baseHours: 530, desc: "音楽のように響く情熱のロマンス語" },
+                "ロシア語": { score: 30, baseHours: 750, desc: "重厚な文法体系を持つスラブの巨塔" },
+                "ポルトガル語": { score: 40, baseHours: 550, desc: "独特の湿り気とグルーヴを持つメロディ" },
+                "エスペラント語 (世界共通を目指す人工言語)": { score: 25, baseHours: 200, desc: "人類の理性が生んだ最も合理的な人工言語" },
+                "フィンランド語 (ウラル語族の孤高な言語)": { score: 20, baseHours: 900, desc: "北欧の神秘に包まれた難攻不落の美学" },
+                "ラテン語 (ロマンス語の母)": { score: 20, baseHours: 850, desc: "すべてのヨーロッパ言語の遺伝子コード" },
+                "アイスランド語 (古代北欧語の生きた化石)": { score: 18, baseHours: 950, desc: "千年間姿を変えないヴァイキングの言語" }
             };
 
             let profileTraits = { sound: 50, logic: 50, ambiguity: 50, grit: 65 };
@@ -406,42 +408,40 @@
             if (answers.eng1 === 'when') engScore++;
             if (answers.eng2 === 'be') engScore++;
 
-            if (engScore === 2 || answers.hasEnglish === 'Yes') {
-                langs["ドイツ語"].score += 15;
-                langs["ラテン語 (ロマンス語の母)"].score += 10;
-                profileTraits.logic += 20;
+            if (engScore === 2) {
+                langs["ドイツ語"].score += 20;
+                langs["ラテン語 (ロマンス語の母)"].score += 15;
+                profileTraits.logic += 25;
             } else {
                 langs["スペイン語"].score += 15;
-                langs["エスペラント語 (人工言語)"].score += 20;
+                langs["エスペラント語 (世界共通を目指す人工言語)"].score += 20;
                 profileTraits.ambiguity += 20;
             }
 
-            if (answers.q7 === 'A') {
+            if (answers.q5 === 'A') {
                 langs["スペイン語"].score += 20;
                 langs["イタリア語"].score += 15;
                 profileTraits.ambiguity += 25;
-            } else if (answers.q7 === 'B') {
+            } else if (answers.q5 === 'B') {
                 langs["ドイツ語"].score += 20;
-                langs["ロシア語"].score += 15;
                 profileTraits.logic += 25;
             }
 
-            if (answers.q9 === 'A') {
+            if (answers.q7 === 'A') {
                 langs["ドイツ語"].score += 25;
                 langs["ロシア語"].score += 25;
-                langs["ラテン語 (ロマンス語の母)"].score += 30;
                 profileTraits.logic += 20;
             } else {
-                langs["エスペラント語 (人工言語)"].score += 25;
+                langs["エスペラント語 (世界共通を目指す人工言語)"].score += 25;
                 langs["韓国語"].score += 20;
             }
 
-            if (answers.q10 === 'A') {
+            if (answers.q8 === 'A') {
                 langs["韓国語"].score += 20;
-                langs["フィンランド語 (ウラル語族)"].score += 20;
+                langs["フィンランド語 (ウラル語族の孤高な言語)"].score += 20;
             }
 
-            if (answers.q11 === 'A') {
+            if (answers.q9 === 'A') {
                 profileTraits.sound += 30;
             }
 
@@ -449,16 +449,36 @@
             let topLang = sorted[0][0];
             let topScore = Math.min(sorted[0][1].score, 97);
 
+            // ペルソナ称号の決定
+            let persona = "マルチモーダル・ナビゲーター";
+            if (profileTraits.logic > 65) persona = "システム構造アナリスト";
+            else if (profileTraits.sound > 65) persona = "オーディオ・インスティンクト（聴覚の魔術師）";
+            else if (profileTraits.ambiguity > 65) persona = "直感型サバイバル・プレイヤー";
+
+            document.getElementById('userPersonaTitle').innerText = `【 認知特性タイプ：${persona} 】`;
             document.getElementById('topLangName').innerText = topLang;
             document.getElementById('topLangScore').innerText = topScore;
+
+            // ワクワクする解説テキスト
+            document.getElementById('resultHook').innerText = profileTraits.logic > 65 
+                ? "規則性や文法フレームワークをパズルのように組み立てることで、爆発的な理解力を発揮します。" 
+                : "文脈や直感、音声のグルーヴ感をダイレクトに身体で捉えることで、最速で言語を体に染み込ませます。";
+            
+            document.getElementById('resultTrap').innerText = answers.q14 === 'A' 
+                ? "単調な暗記作業に直面すると急激にモチベーションが低下するため、必ず実用的なコンテンツを絡めること。" 
+                : "進捗の成果が見えづらい時期に焦りを感じやすいため、小さなマイルストーンを刻むことが鍵となります。";
 
             let top5Html = "";
             let medals = ["1st", "2nd", "3rd", "4th", "5th"];
             for (let i = 0; i < 5; i++) {
                 let sc = Math.min(sorted[i][1].score, 97 - i * 4);
-                top5Html += `<div class="flex justify-between items-center bg-zinc-950/70 p-3.5 rounded-xl border border-zinc-800">
-                    <span class="text-xs"><strong class="text-stone-400 mr-2">${medals[i]}</strong> <strong class="text-zinc-100 text-sm">${sorted[i][0]}</strong></span>
-                    <span class="text-stone-300 font-semibold text-xs">${sc}% Match</span>
+                top5Html += `<div class="flex justify-between items-center bg-zinc-950/70 p-4 rounded-2xl border border-zinc-800/80">
+                    <div>
+                        <span class="text-stone-400 text-xs font-bold mr-3">${medals[i]}</span>
+                        <strong class="text-zinc-100 text-sm md:text-base">${sorted[i][0]}</strong>
+                        <p class="text-xs text-zinc-400 mt-0.5">${sorted[i][1].desc}</p>
+                    </div>
+                    <span class="text-stone-300 font-semibold text-xs bg-zinc-900 px-3 py-1.5 rounded-full border border-zinc-800">${sc}% シンクロ</span>
                 </div>`;
             }
             document.getElementById('top5Container').innerHTML = top5Html;
@@ -467,15 +487,12 @@
             let finalHours = Math.round(baseH * (1 - (topScore - 30) * 0.0025));
             let months = (finalHours / (answers.minutes / 60) / 30).toFixed(1);
 
-            document.getElementById('calcHours').innerText = finalHours;
+            document.getElementById('calcHours').innerText = `${finalHours} 時間`;
             document.getElementById('calcMonths').innerText = `${months} ヶ月`;
-            document.getElementById('calcCost').innerText = "約 2万 〜 6万円（オンライン教材・アプリ活用）";
 
-            document.getElementById('strategyPlan').innerText = `【言語学的プロファイリング分析】
-ご回答いただいた学習歴、英語文法テストの正解数（${engScore}/2問）、ならびにMBTI（${answers.mbti}）と認知特性に基づき解析を行いました。
-あなたは「${answers.q7 === 'A' ? '不確実な状況でも文脈から推論し、実践的なコミュニケーションを好む' : '言語体系の論理構造や規則性を分析し、演繹的に理解を深める'}」という認知特性を持っています。
-この特性を考慮すると、英語や中国語以外の選択肢として「${topLang}」があなたの脳内OSに最もスムーズに馴染むと判定されました。
-第二言語習得論（SLA）の知見に従い、まずは1日${answers.minutes}分の学習から音声インプットとパターン認識を並行して進めることで、効率よくCEFR B1レベルへの到達が可能です。`;
+            document.getElementById('strategyPlan').innerText = `【言語学的アナリストレポート】
+あなたの17項目の回答から、脳内OSは「${persona}」の特性を強く示しています。文法テストの正解数（${engScore}/2問）および音感・曖昧さ耐性のバランスを踏まえ、数ある言語の中から「${topLang}」が最もシナジーを生むと判定されました。
+第二言語習得論（SLA）におけるインプット仮説に基づき、1日${answers.minutes}分の音声接触と構造分析を並行させることで、無理なく自立的運用レベル（B1）に到達可能です。`;
 
             document.getElementById('resultArea').classList.remove('hidden');
             renderChart(profileTraits);
@@ -489,10 +506,12 @@
                     labels: ['音声知覚', '文法ロジック', '曖昧さ耐性', '継続維持力'],
                     datasets: [{
                         data: [traits.sound, traits.logic, traits.ambiguity, traits.grit],
-                        backgroundColor: 'rgba(214, 211, 209, 0.15)',
-                        borderColor: 'rgba(214, 211, 209, 0.8)',
-                        borderWidth: 1.5,
-                        pointBackgroundColor: 'rgba(255, 255, 255, 1)'
+                        backgroundColor: 'rgba(244, 244, 245, 0.12)',
+                        borderColor: 'rgba(244, 244, 245, 0.9)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(255, 255, 255, 1)',
+                        pointBorderColor: '#0c0c0e',
+                        pointBorderWidth: 2
                     }]
                 },
                 options: {
@@ -500,7 +519,7 @@
                         r: {
                             angleLines: { color: 'rgba(255,255,255,0.08)' },
                             grid: { color: 'rgba(255,255,255,0.08)' },
-                            pointLabels: { color: '#a1a1aa', font: { size: 10 } },
+                            pointLabels: { color: '#a1a1aa', font: { size: 11, family: 'Plus Jakarta Sans' } },
                             ticks: { display: false },
                             min: 0, max: 100
                         }
